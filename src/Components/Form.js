@@ -1,0 +1,66 @@
+import React, { useState, useReducer } from "react";
+import { ACTIONS, reducer } from "../Global/Reducer";
+import Todo from "./Todo";
+import styled from "styled-components";
+
+const WrapperForm = styled.form`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: auto;
+  margin: 20px 0;
+`;
+
+const Input = styled.input`
+  height: 4rem;
+  width: auto;
+  border: 1px solid black;
+`;
+
+const Button = styled.button`
+  margin: 0 10px;
+  height: 4rem;
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+`;
+
+const Form = () => {
+  const [todos, dispatch] = useReducer(reducer, []);
+  const [name, setName] = useState("");
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    setName("");
+  }
+  return (
+    <>
+      <WrapperForm onSubmit={handleSubmit}>
+        <Input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <Button
+          onClick={() =>
+            dispatch({ type: ACTIONS.NEW_TODO, payload: { name: name } })
+          }
+        >
+          Add new task
+        </Button>
+      </WrapperForm>
+      <Wrapper>
+        {todos.map((todo) => {
+          return <Todo key={todo.id} todo={todo} dispatch={dispatch} />;
+        })}
+      </Wrapper>
+    </>
+  );
+};
+
+export default Form;
