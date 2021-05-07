@@ -25,7 +25,7 @@ export function reducer(todos, action) {
     case ACTIONS.EDIT_TODO:
       return todos.map((todo) => {
         if (todo.id === action.payload.id) {
-          return { ...todo, name: "nowa wartość" };
+          return { ...todo, name: action.payload.name };
         }
         return todo;
       });

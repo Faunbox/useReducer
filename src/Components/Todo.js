@@ -1,16 +1,36 @@
 import React, { useState } from "react";
 import { ACTIONS } from "../Global/Reducer";
+import styled from "styled-components";
+
+const TodoWrapper = styled.div`
+  padding: 10px 0;
+`;
+
+const Button = styled.button`
+  margin: 0px 5px;
+  padding: ${(props) => props.padding};
+`;
+
+const Input = styled.input`
+  margin: 0 5px;
+  padding: 5px;
+`;
 
 const Todo = ({ todo, dispatch }) => {
   const [edit, setEdit] = useState(false);
   const [updatedTask, setUpdatedTask] = useState("");
 
   return (
-    <div>
-      <span style={{ color: todo.complete ? "#AAA" : "#000" }}>
+    <TodoWrapper>
+      <span
+        style={{
+          color: todo.complete ? "green" : "#000",
+          textDecoration: todo.complete ? "underline" : "none",
+        }}
+      >
         {todo.name}
       </span>
-      <button
+      <Button
         onClick={() => {
           dispatch({
             type: ACTIONS.TOGGLE_TODO,
@@ -21,8 +41,8 @@ const Todo = ({ todo, dispatch }) => {
         }}
       >
         Toggle
-      </button>
-      <button
+      </Button>
+      <Button
         onClick={() =>
           dispatch({
             type: ACTIONS.DELETE_TODO,
@@ -33,31 +53,36 @@ const Todo = ({ todo, dispatch }) => {
         }
       >
         Delete
-      </button>
-      <button onClick={() => setEdit((prevState) => !prevState)}>Edit</button>
+      </Button>
+      <Button onClick={() => setEdit((prevState) => !prevState)}>Edit</Button>
 
       {edit && (
-        <label for="edit">
-          <input
+        <label>
+          <Input
             type="text"
-            value={todo.name}
+            value={updatedTask}
+            placeholder="tekst dłuższy jak 3 znaki"
             onChange={(e) => setUpdatedTask(e.target.value)}
           />
-          <button
-            onClick={() =>
-              dispatch({
-                type: ACTIONS.EDIT_TODO,
-                payload: {
-                  name: updatedTask,
-                },
-              })
-            }
+          <Button
+            padding="5px"
+            onClick={() => {
+              updatedTask.length >= 3 &&
+                dispatch({
+                  type: ACTIONS.EDIT_TODO,
+                  payload: {
+                    id: todo.id,
+                    name: updatedTask,
+                  },
+                });
+              setEdit((prevState) => !prevState);
+            }}
           >
             OK
-          </button>
+          </Button>
         </label>
       )}
-    </div>
+    </TodoWrapper>
   );
 };
 
