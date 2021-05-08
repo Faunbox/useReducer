@@ -8,6 +8,6 @@ export const GlobalStyles = createGlobalStyle`
 }
 
 html {
-    font-size: 10px;
+    font-size: 16px;
 }
 `;

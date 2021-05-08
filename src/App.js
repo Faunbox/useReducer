@@ -1,13 +1,22 @@
 import React from "react";
-import "./App.css";
 import { GlobalStyles } from "../src/Global/GlobalStyles";
 import Form from "./Components/Form";
+import { AuthProvider } from "../src/contex/AuthContex";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import SignUp from "./Components/Signup";
 
 function App() {
   return (
     <>
-      <GlobalStyles />
-      <Form />
+      <Router>
+        <GlobalStyles />
+        <AuthProvider>
+          <Switch>
+            <Route exact path="/" component={Form} />
+            <Route path="/zaloguj" component={SignUp} />
+          </Switch>
+        </AuthProvider>
+      </Router>
     </>
   );
 }
