@@ -1,9 +1,12 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { GlobalStyles } from "../src/Global/GlobalStyles";
 import Form from "./Components/Form";
+import PrivateRoute from "./Components/PrivateRoute";
 import { AuthProvider } from "../src/contex/AuthContex";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import SignUp from "./Components/Signup";
+
+const SignUp = React.lazy(() => import("./Components/Signup"));
+const LogIn = React.lazy(() => import("./Components/LogIn"));
 
 function App() {
   return (
@@ -12,8 +15,11 @@ function App() {
         <GlobalStyles />
         <AuthProvider>
           <Switch>
-            <Route exact path="/" component={Form} />
-            <Route path="/zaloguj" component={SignUp} />
+            <Suspense fallback={<div>Wczytywanie...</div>}>
+              <PrivateRoute exact path="/" component={Form} />
+              <Route path="/rejestracja" component={SignUp} />
+              <Route path="/logowanie" component={LogIn} />
+            </Suspense>
           </Switch>
         </AuthProvider>
       </Router>
