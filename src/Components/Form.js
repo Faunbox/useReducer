@@ -80,6 +80,7 @@ const Form = () => {
           onChange={(e) => setName(e.target.value)}
         />
         <Button
+          type="submit"
           onClick={() =>
             name.length >= 3 &&
             dispatch({ type: ACTIONS.NEW_TODO, payload: { name: name } })

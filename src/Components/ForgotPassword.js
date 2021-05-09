@@ -1,26 +1,25 @@
 import React, { useRef, useState } from "react";
 import { Form, Button, Card, Container, Alert } from "react-bootstrap";
 import { useAuth } from "../contex/AuthContex";
-import { Link, useHistory } from "react-router-dom";
 
-const LogIn = () => {
+const ForgotPassword = () => {
   const emailRef = useRef(null);
-  const passwordRef = useRef(null);
-  const { login } = useAuth();
+  const { resetPassword } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const history = useHistory();
+  const [message, setMessage] = useState("");
 
   async function handleSubmit(e) {
     e.preventDefault();
 
     try {
+      setMessage("");
       setError("");
       setLoading(true);
-      await login(emailRef.current.value, passwordRef.current.value);
-      history.push("/");
+      await resetPassword(emailRef.current.value);
+      setMessage("Sprawdz email");
     } catch {
-      setError("Błąd podczas logowania");
+      setError("Błąd podczas resetowania hasła");
     }
     setLoading(false);
   }
@@ -34,33 +33,24 @@ const LogIn = () => {
         <div className={"w-100"} style={{ maxWidth: "400px" }}>
           <Card>
             <Card.Body>
-              <h2 className="text-center mb-4">Zaloguj się</h2>
+              <h2 className="text-center mb-4">Reset hasła</h2>
               {error && <Alert variant="danger">{error}</Alert>}
+              {message && <Alert variant="success">{message}</Alert>}
               <Form onSubmit={handleSubmit}>
                 <Form.Group id="email">
                   <Form.Label>Email</Form.Label>
                   <Form.Control type="email" required ref={emailRef} />
                 </Form.Group>
-                <Form.Group id="password" className="mb-5">
-                  <Form.Label>Hasło</Form.Label>
-                  <Form.Control type="password" required ref={passwordRef} />
-                </Form.Group>
                 <Button disabled={loading} className="w-100" type="submit">
-                  Zaloguj się
+                  Zresetuj hasło
                 </Button>
               </Form>
             </Card.Body>
           </Card>
-          <div className="w-100 text-center mt-2">
-            <Link to="/reset-hasla">Zapomniałeś hasła?</Link>
-          </div>
-          <div className="w-100 text-center mt-4">
-            Potrzebujesz konta? <Link to="/rejestracja">Zarejestruj się</Link>
-          </div>
         </div>
       </Container>
     </>
   );
 };
 
-export default LogIn;
+export default ForgotPassword;

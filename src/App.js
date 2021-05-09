@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 const SignUp = React.lazy(() => import("./Components/Signup"));
 const LogIn = React.lazy(() => import("./Components/LogIn"));
+const ForgotPassword = React.lazy(() => import("./Components/ForgotPassword"));
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
               <PrivateRoute exact path="/" component={Form} />
               <Route path="/rejestracja" component={SignUp} />
               <Route path="/logowanie" component={LogIn} />
+              <Route path="/reset-hasla" component={ForgotPassword} />
             </Suspense>
           </Switch>
         </AuthProvider>
